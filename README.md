@@ -1,5 +1,40 @@
 # Office Client Cutover Tool (OCCT)
 
+OCCT is designed for users migrating from Microsoft Cloud Deutschland (MCD) to the global Office 365 (MCI). The migration process is decribed here: https://docs.microsoft.com/en-us/microsoft-365/enterprise/ms-cloud-germany-transition?view=o365-worldwide
+
+After phase 9 of the migration happened, Office Pro Plus client may stop working. To solve this issue, users have to sign out from all Office applications, restart Office and sign in again. 
+OCCT was developed to automate this client-side migration by running the script automatically (e.g. as scheduled task) without need to manuelly sign out/sign in.
+
+First OCCT checks if phase 9 is done for the tenant. If true, it checks for running Office apps and asks the user to close the apps. After 10 minutes of waiting, OCCT automatically closes all running Office apps. As soon as all Office apps are closed, OCCT updates the client configuration to work with MCI.
+
+
+## Prerequisits
+- Windows 10
+- PowerShell 5.0 or higher
+- Office Pro Plus
+
+## Installation
+1. Download this repository
+2. Copy all files to all clients you want OCCT to use on (e.g. to %ProgramFiles%\WindowsPowerShell\Modules\OCCT)
+3. Deploy a scheduled task (e.g. by GPO) to run OCCT regularly (once an hour).
+4. Import OCCT PowerShell module
+5. Run Start-OCCT with the parameters you need (see following section)
+
+
+## Parameters
+| Parameter     | Required | Default | Decription |
+| ------------- |:-------------| -----| -----|
+| Tenant | Yes | Empty | Name of your tenant. If your tenant domain is contoso.onmicrosoft.de, enter just contoso
+| Force | No | False | If true, OCCT runs immediatly without throttling protection. Only for testing.
+| ResetRootFedProvider | No | True | if true, FederationProvider in the Office identity root hive will also be removed.
+| ReopenOfficeApps | No | False | If true, Office Apps closed by OCCT will be re-opened automatically afterwards.
+| OfficeHRDLookup | No | False | If true, use alternativ way to detect tenant cutover.
+| RemoveOfficeIdentityHive | No | False | If true, the complete Office identity hive will be removed. Caution, you might loose some custom configurations.
+| ClearOlkAutodiscoverCache | No | True | If true, Outlook AutoDiscovercache will be cleared to remove outdated AutoDiscover information.
+| UpdateODBClient | No | True | If true, connection settings of OneDrive for Business client will be updated.
+| RemoveBFWamAccount | No | True | If true, accounts from MCD will be removed from WAM.
+
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
