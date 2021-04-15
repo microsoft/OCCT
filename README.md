@@ -15,10 +15,10 @@ First OCCT checks if phase 9 is done for the tenant. If true, it checks for runn
 
 ## Installation
 1. Download this repository
-2. Copy all files to all clients you want OCCT to use on (e.g. to %ProgramFiles%\WindowsPowerShell\Modules\OCCT)
-3. Deploy a scheduled task (e.g. by GPO) to run OCCT regularly (once an hour).
+2. Deploy OCCT to client computers: Copy all files and folder (e.g. to %ProgramFiles%\WindowsPowerShell\Modules\OCCT)
+3. Create a scheduled task (e.g. by GPO) to run OCCT regularly (once per hour).
 4. Import OCCT PowerShell module
-5. Run Start-OCCT with the parameters you need (see following section)
+5. Run Start-OCCT -Tenant <tenantname> command with the additional parameters you need (see following section)
 
 
 ## Parameters
