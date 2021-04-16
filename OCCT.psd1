@@ -1,6 +1,6 @@
 @{
     # Script module or binary module file associated with this manifest
-    ModuleToProcess    = 'OCCT.psm1'
+    RootModule    = 'OCCT.psm1'
 	
     # Version number of this module.
     ModuleVersion      = '1.0.0'
@@ -25,9 +25,7 @@
 	
     # Modules that must be imported into the global environment prior to importing
     # this module
-    RequiredModules    = @(
-        @{}
-    )
+    RequiredModules    = @()
 	
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies = @()
@@ -40,13 +38,11 @@
 	
     # Functions to export from this module
     FunctionsToExport  = @(
-
+        'Start-OCCT'
     )
 	
     # Cmdlets to export from this module
-    CmdletsToExport    = @(
-        'Start-OCCT'
-    )
+    CmdletsToExport    = @()
 	
     # Variables to export from this module
     VariablesToExport  = ''

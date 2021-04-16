@@ -49,3 +49,4 @@ foreach ($function in (Get-ChildItem "$ModuleRoot\functions" -Filter "*.ps1" -Re
 }
 
 Initialize-Resources
+Export-ModuleMember -Function Start-OCCT
