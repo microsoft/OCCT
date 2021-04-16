@@ -16,7 +16,7 @@ function Initialize-Resources() {
     $global:resources = New-Object System.Collections.Generic.Dictionary"[String,String]"
 
     # Information messages
-    $global:resources.Add("EventID-100", "OCCT run started, Version {0}")
+    $global:resources.Add("EventID-100", "OCCT run started")
     $global:resources.Add("EventID-101", "Computer name: {0}{1}User-SID: {2}")
     $global:resources.Add("EventID-102", "Tenant: {0}")
     $global:resources.Add("EventID-103", "Tenant is migrated, check FederationProvider.")

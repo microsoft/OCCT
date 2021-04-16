@@ -43,13 +43,12 @@ function Start-OCCT {
         $removeBFWamAccount = $true
     )
 
-    $version = $global:version
     $forceMode = $force
     $tenantName = $tenant
     
     Initialize-Resources
 
-    Publish-EventLog -EventId 100 -EntryType Information -Message ([string]::Format($global:resources["EventID-100"], $version))
+    Publish-EventLog -EventId 100 -EntryType Information -Message ($global:resources["EventID-100"])
 
     # Test if OCCT is already running
     if (Test-ExistingProcess) {
@@ -147,7 +146,7 @@ function Start-OCCT {
             $promptCount++
         } while ((($runningApps | Measure-Object).count -gt 0) -and ($promptCount -lt 10));
 
-        $result = ResetFederationProvider
+        $result = Reset-FederationProvider
         if ($result) {
             Publish-EventLog -EventId 106 -EntryType Information -Message ($global:resources["EventID-106"])
         } else {
