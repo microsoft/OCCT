@@ -33,24 +33,16 @@ function Reset-FederationProvider {
                 return $false
             }
 
-            if ($federationProvider -like "*microsoftonline.de*") {
-                # BF Federation provider found, clean
-                Publish-EventLog -EventId 111 -EntryType Information -Message ($global:resources["EventID-111"])
-                try {
-                    Publish-EventLog -EventId 110 -EntryType Information -Message ([string]::Format($global:resources["EventID-110"], $federationProvider))
-                    Set-ItemProperty -Path "Registry::$($identity.Name)" -Name "FederationProvider" -Value "Error" -ErrorAction Stop
-                    try {
-                        $global:fileLog.General.CutoverPerformed = 1
-                    } catch {
-                        # No catch necessary - try necessary in case $global:fileLog could not be initialized properly
-                    }
-                    return $true
-                } catch {
-                    Publish-EventLog -EventId 206 -EntryType Error -Message ($global:resources["EventID-206"])
-                    return $false
-                }
-            } else {
-                Publish-EventLog -EventId 112 -EntryType Information -Message ($global:resources["EventID-112"])
+            # BF Federation provider found, clean
+            Publish-EventLog -EventId 111 -EntryType Information -Message ($global:resources["EventID-111"])
+            try {
+                Publish-EventLog -EventId 110 -EntryType Information -Message ([string]::Format($global:resources["EventID-110"], $federationProvider))
+                Set-ItemProperty -Path "Registry::$($identity.Name)" -Name "FederationProvider" -Value "Error" -ErrorAction Stop
+                
+                return $true
+            } catch {
+                Publish-EventLog -EventId 206 -EntryType Error -Message ($global:resources["EventID-206"])
+                return $false
             }
         }
     } else {
