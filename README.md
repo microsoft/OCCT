@@ -14,6 +14,15 @@ First OCCT checks if phase 9 is done for the tenant. If true, it checks for runn
 - Office Pro Plus
 
 ## Installation
+OCCT is provided in two different versions:
+- Script version: This is a easy ready-to-use version of OCCT. You just need to download one PowerShell script to your client and run it on PowerShell.
+- PowerShell module version: This is a PowerShell module with all features provided by OCCT to be used to build your own custom version of OCCT.
+### Installation (PowerShell script)
+1. Download OCCT.ps1 from this repository
+2. Copy this file to an affected client computer.
+3. Create a scheduled task (e.g. by GPO) to run OCCT regularly (once per hour) or run it manually. Make sure the Execution Policy of the client allows PowerShell script executions.
+4. If you provide a tenant name to OCCT.ps1 (e.g. .\OCCT.ps1 -tenant MyTenant) OCCT will check first if the migration of the tenant is done. Without this parameter, OCCT will run without any checks.
+### Installation (PowerShell Module)
 1. Download this repository
 2. Deploy OCCT to client computers: Copy all files and folder (e.g. to %ProgramFiles%\WindowsPowerShell\Modules\OCCT)
 3. Create a scheduled task (e.g. by GPO) to run OCCT regularly (once per hour).
@@ -24,7 +33,7 @@ First OCCT checks if phase 9 is done for the tenant. If true, it checks for runn
 ## Parameters
 | Parameter | Required | Default | Description |
 | :------------- |:-------------| :-----| :-----|
-| Tenant | Yes | Empty | Name of your tenant. If your tenant domain is contoso.onmicrosoft.de, enter just contoso
+| Tenant | No | Empty | Name of your tenant. If your tenant domain is contoso.onmicrosoft.de, enter just contoso. If provided, OCCT will check if tenant cutover is already done before doing any actions.
 | Force | No | False | If true, OCCT runs immediately without throttling protection. Only for testing.
 | ResetRootFedProvider | No | True | if true, FederationProvider in the Office identity root hive will also be removed.
 | ReopenOfficeApps | No | False | If true, Office Apps closed by OCCT will be re-opened automatically afterwards.

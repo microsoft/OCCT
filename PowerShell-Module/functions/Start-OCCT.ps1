@@ -14,7 +14,7 @@
 
 function Start-OCCT {
     Param(
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $false)]
         [String]
         $tenant,
         [parameter(Mandatory = $false)]
@@ -34,7 +34,7 @@ function Start-OCCT {
         $removeOfficeIdentityHive = $false,
         [parameter(Mandatory = $false)]
         [bool]
-        $clearOlkAutodiscoverCache = $true,
+        $clearOlkAutodiscoverCache = $false,
         [parameter(Mandatory = $false)]
         [bool]
         $updateODBClient = $true,
@@ -78,54 +78,57 @@ function Start-OCCT {
         exit
     }
 
-    # check if client is affected
-    $checkFederationProviderResult = Test-FederationProvider
-    if ($resetRootFedProvider -eq $true) {
-        $checkRootFederationProviderResult = Test-RootFederationProvider
-    } else {
-        $checkRootFederationProviderResult = $false
-    }
-    
-    if ((($checkFederationProviderResult -eq $false) -and ($checkRootFederationProviderResult -eq $false))) {
-        # No BF Federationprovider found on client
-        Publish-EventLog -EventId 117 -EntryType Information -Message ($global:resources["EventID-117"])
-    }
-
-    if (!$forceMode) {
-        try {
-            $offset = GetMaxOffset
-            Start-Sleep -seconds (Get-SleepTime($offset))
-        } catch {
-            # Continue without sleep, if sth in sleep function fails
-        }
-    } else {
-        Publish-EventLog -EventId 123 -EntryType Information -Message ($global:resources["EventID-123"])
-    }
-
-    # Check internet connectivity.
-    # Exit program in case internet connectivity is missing.
-    if (!(Test-InternetConnectivity)) {
-        Publish-EventLog -EventId 202 -EntryType Error -Message ($global:resources["EventID-202"])
-        exit
-    }
-    
-    Publish-EventLog -EventId 102 -EntryType Information -Message ([string]::Format($global:resources["EventID-102"], $tenantName))
-
-    $tenantIsMigrated = $false;
-    try {
-        if ($officeHRDLookup) {
-            Publish-EventLog -EventId 129 -EntryType Information -Message ([string]::Format($global:resources["EventID-129"], $tenantName))
-            $tenantIsMigrated = Test-OfficeHRDTenantCutover($tenantName)
+    if($tenantName) {
+        # check if client is affected
+        $checkFederationProviderResult = Test-FederationProvider
+        if ($resetRootFedProvider -eq $true) {
+            $checkRootFederationProviderResult = Test-RootFederationProvider
         } else {
-            Publish-EventLog -EventId 130 -EntryType Information -Message ([string]::Format($global:resources["EventID-130"], $tenantName))
-            $tenantIsMigrated = Test-TenantCutover($tenantName)
+            $checkRootFederationProviderResult = $false
         }
-    } catch {
-        Publish-EventLog -EventId 217 -EntryType Error -Message ([string]::Format($global:resources["EventID-217"], [Environment]::NewLine, $_.Exception.Message))
-        exit
+        
+        if ((($checkFederationProviderResult -eq $false) -and ($checkRootFederationProviderResult -eq $false))) {
+            # No BF Federationprovide-r found on client
+            Publish-EventLog -EventId 117 -EntryType Information -Message ($global:resources["EventID-117"])
+        }
 
+        if (!$forceMode) {
+            try {
+                $offset = GetMaxOffset
+                Start-Sleep -seconds (Get-SleepTime($offset))
+            } catch {
+                # Continue without sleep, if sth in sleep function fails
+            }
+        } else {
+            Publish-EventLog -EventId 123 -EntryType Information -Message ($global:resources["EventID-123"])
+        }
+
+        # Check internet connectivity.
+        # Exit program in case internet connectivity is missing.
+        if (!(Test-InternetConnectivity)) {
+            Publish-EventLog -EventId 202 -EntryType Error -Message ($global:resources["EventID-202"])
+            exit
+        }
+        
+        Publish-EventLog -EventId 102 -EntryType Information -Message ([string]::Format($global:resources["EventID-102"], $tenantName))
+
+        $tenantIsMigrated = $false;
+        try {
+            if ($officeHRDLookup) {
+                Publish-EventLog -EventId 129 -EntryType Information -Message ([string]::Format($global:resources["EventID-129"], $tenantName))
+                $tenantIsMigrated = Test-OfficeHRDTenantCutover($tenantName)
+            } else {
+                Publish-EventLog -EventId 130 -EntryType Information -Message ([string]::Format($global:resources["EventID-130"], $tenantName))
+                $tenantIsMigrated = Test-TenantCutover($tenantName)
+            }
+        } catch {
+            Publish-EventLog -EventId 217 -EntryType Error -Message ([string]::Format($global:resources["EventID-217"], [Environment]::NewLine, $_.Exception.Message))
+            exit
+
+        }
+    } else {
+        $tenantIsMigrated = $true
     }
-
     if ($tenantIsMigrated) {
         Publish-EventLog -EventId 103 -EntryType Information -Message ($global:resources["EventID-103"])
         
