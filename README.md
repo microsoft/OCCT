@@ -35,11 +35,11 @@ OCCT is provided in two different versions:
 | :------------- |:-------------| :-----| :-----|
 | Tenant | No | Empty | Name of your tenant. If your tenant domain is contoso.onmicrosoft.de, enter just contoso. If provided, OCCT will check if tenant cutover is already done before doing any actions.
 | Force | No | False | If true, OCCT runs immediately without throttling protection. Only for testing.
-| ResetRootFedProvider | No | True | if true, FederationProvider in the Office identity root hive will also be removed.
+| ResetRootFedProvider | No | True | If true, FederationProvider in the Office identity root hive will also be removed.
 | ReopenOfficeApps | No | False | If true, Office Apps closed by OCCT will be re-opened automatically afterwards.
 | OfficeHRDLookup | No | False | If true, use alternative way to detect tenant cutover.
 | RemoveOfficeIdentityHive | No | False | If true, the complete Office identity hive will be removed. Caution, you might loose some custom configurations.
-| ClearOlkAutodiscoverCache | No | True | If true, Outlook AutoDiscovercache will be cleared to remove outdated AutoDiscover information.
+| ClearOlkAutodiscoverCache | No | False | If true, Outlook AutoDiscover cache will be cleared to remove outdated AutoDiscover information.
 | UpdateODBClient | No | True | If true, connection settings of OneDrive for Business client will be updated.
 | RemoveBFWamAccount | No | True | If true, accounts from MCD will be removed from WAM.
 
