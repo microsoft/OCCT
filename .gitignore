@@ -1,2 +1,3 @@
 .DS_Store
-.BuildFromModule.ps1
+BuildFromModule.ps1
+.gitignore
