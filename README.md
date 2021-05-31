@@ -18,7 +18,7 @@ If the user does not respond to the message prompt, OCCT is automatically closin
 ## Usage
 OCCT is built on PowerShell can be executed automated or manually and has been created in two versions - a simple PowerShell script and a PowerShell module. The recommended version for must customers is the script version.
 
-Download the PowerShell script [(`OCCT.ps1`)](https://raw.githubusercontent.com/microsoft/OCCT/main/OCCT.ps1) from this repository.
+Download the PowerShell script [(OCCT.ps1)](https://raw.githubusercontent.com/microsoft/OCCT/main/OCCT.ps1) from this repository.
 In case the tenant already passed migration phase 9 and clients encounter issues with Office apps, the user should run `OCCT.ps1` on the client to reconfigure the client to connect to the new German datacenter regions.
 
 Windows 10 does not allow running PowerShell scripts by default. In order to run script, the local execution policy must be modified.
