@@ -1,12 +1,12 @@
 # Office Client Cutover Tool (OCCT)
-OCCT is designed for customers migrating from Microsoft Cloud Germany (Microsoft Cloud Deutschland) to Office 365 services in the new German datacenter regions. OCCT supports the migration of Office Apps on Windows devices in migration phase 9. A detailed description of the migration process is available in [Microsoft Docs](https://docs.microsoft.com/en-us/microsoft-365/enterprise/ms-cloud-germany-transition?view=o365-worldwide).
+OCCT is designed for customers migrating from Microsoft Cloud Deutschland to Office 365 services in the new German datacenter regions. OCCT supports the migration of Office Apps on Windows devices after migration phase 9 completed. A detailed description of the migration process is available in [Microsoft Docs](https://docs.microsoft.com/en-us/microsoft-365/enterprise/ms-cloud-germany-transition?view=o365-worldwide).
 
-After migration phase 9 of the migration process completed, Office 365 Apps for Windows (Word, Excel, PowerPoint, Outlook) may stop working. To solve this issue, users must sign out from all Office applications, restart Office and sign in again.
-OCCT will automate the client-side steps without having to to perform manually sign out/sign in operations.
+After phase 9 of the migration process completed, Office 365 Apps for Windows (Word, Excel, PowerPoint, Outlook) may stop working. To solve this issue, users must sign out from all Office applications, close them, open any Office App and sign in again.
+OCCT will automate the client-side steps without having to to perform manually sign out/sign in operations. 
 
-The tool is designed to be executed on-demand after migration phase 9 has been completed or as an scheduled task which checks the completion status periodically. The last option ensures the best user experience in managed environments.
+The tool is designed to be executed by an affected user once after migration phase 9 has been completed or a scheduled task is added to run the tool periodically. The last option ensures the best user experience in managed environments. Running OCCT does not require local administrator privileges.
 
-While executing OCCT, the tool examines the migration status for the tenant. If migration phase 9 has been completed, the client must be updated. To successfully run OCCT, all Office Apps must be closed. If the user is running Office Apps, a message prompt will appear and request the user to close all running Office Apps. The message displays which Office Apps are running and need to be closed.
+While executing OCCT, the tool can examine the migration status for the tenant. If migration phase 9 has been completed, the client must be updated. To successfully run OCCT, all Office Apps must be closed. If the user is running Office Apps, a message prompt will appear and request the user to close all running Office Apps. The message displays which Office Apps are running and need to be closed.
 
 If the user does not respond to the message prompt, OCCT is automatically closing all running Office apps after 10 minutes. Once all Office Apps are closed, OCCT updates the client configuration to work with the new German datacenter region.
 
@@ -16,23 +16,45 @@ If the user does not respond to the message prompt, OCCT is automatically closin
 - Office Apps for Windows
 
 ## Usage
-OCCT is provided in two versions, both can be executed automaed or manually:
-- Script version: This is a easy ready-to-use version of OCCT. You just need to download one PowerShell script (OCCT.ps1) to your client and run it on PowerShell.
-- PowerShell module version: This is a PowerShell module with all features provided by OCCT to be used to build your own custom version of OCCT.
+OCCT is built on PowerShell can be executed automated or manually and has been created in two versions - a simple PowerShell script and a PowerShell module. The recommended version for must customers is the script version.
 
-### PowerShell script
+Download the PowerShell script [(`OCCT.ps1`)](https://raw.githubusercontent.com/microsoft/OCCT/main/OCCT.ps1) from this repository.
+In case the tenant already passed migration phase 9 and clients encounter issues with Office apps, the user should run `OCCT.ps1` on the client to reconfigure the client to connect to the new German datacenter regions.
+
+Windows 10 does not allow running PowerShell scripts by default. In order to run script, the local execution policy must be modified.
+To temporary allow executing PowerShell scripts, open PowerShell and run the command:
+
+`Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser`
+
+Run `OCCT.ps1`, then reset the original state of the execution policy by executing the following command:
+
+`Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope CurrentUser`
+
+IT departments or administrators who are responsible for multiple computers should consider deploying the script file to all Windows clients with Office Apps connected to Microsoft Cloud Deutschland prior to the end of phase 9 and prepare the users.
+
+Either the users execute the script according to the provided instructions after the migration phase 9 is completed, or a scheduled task is created to execute OCCT regularly (e.g. on startup and every 10 minutes).
+
+If the tenant name is provided to OCCT as a parameter (e.g. `.\OCCT.ps1 -tenant MyTenant`), OCCT will check if the migration phase 9 has been completed for the tenant prior to reconfiguring the client. Without this parameter, OCCT will start updating the client configuration without any pre-checks. It is recommended to do the pre-check if OCCT should be executed periodically.
+
+### Summary
 1. Download OCCT.ps1 from this repository.
-2. Copy this file to an affected client computer.
-3. Create a scheduled task (e.g. by GPO) to run OCCT regularly (once per hour) or run it manually. Ensure the local execution policy of the client allows PowerShell script executions. 
-4. If you provide your tenant name to OCCT.ps1 as an parameter (e.g. `.\OCCT.ps1 -tenant MyTenant`), OCCT will check if the migration phase 9 has been completed for your tenant prior to reconfiguring the client. Without this parameter, OCCT will start updating the client configuration without any pre-checks. It is recommended to do the pre-check if you plan to run OCCT periodically.
+2. Copy this file to all Windows clients with Office Apps connected to Microsoft Cloud Deutschland.
+3. Script execution
+    - Option 1: Run the script once when migration phase 9 has been completed and your Office Apps are not connected anymore.
+    - Option 2: Create a scheduled task (e.g. by GPO) to run OCCT regularly. 
+
+    Ensure the local execution policy of the client allows PowerShell script executions. 
+
+## Advanced Usage
 ### PowerShell module
+This is a PowerShell module with all features provided by OCCT to be used to build your own custom version.
 1. Download this repository.
 2. Deploy the OCCT module to all client computers: Copy all files and folders to an common PowerShell module folder (e.g. to `%ProgramFiles%\WindowsPowerShell\Modules\OCCT`).
-3. Create a scheduled task (e.g. by GPO or manually) to run OCCT regularly (once per hour).
-4. The scheduled task must import the OCCT PowerShell module.
-5. The scheduled task must run the "Start-OCCT -Tenant <tenantname>" command, extended with all additional parameters you want to leverage (see following section).
+3. Create a scheduled task (e.g. by GPO or manually) to run OCCT regularly.
+4. The scheduled task must run PowerShell and the "Start-OCCT -Tenant <tenantname>" command, extended with all additional parameters you want to leverage (see following section).
 
 ## Parameters
+The parameters are valid for both versions of OCCT, the simple script file and the PowerShell module.
 | Parameter | Required | Default | Description |
 | :------------- |:-------------| :-----| :-----|
 | Tenant | No | Empty | Name of your tenant. If your tenant domain is contoso.onmicrosoft.de, enter contoso only. Adding ".onmicrosoft.de" is not supported. If provided, OCCT will verify if the tenant cutover (phase 9 completed) is already done before performing any actions.
@@ -40,7 +62,7 @@ OCCT is provided in two versions, both can be executed automaed or manually:
 | ResetRootFedProvider | No | True | If true, FederationProvider in the Office identity root hive will also be removed for the current user.
 | ReopenOfficeApps | No | False | If true, all Office Apps which have been closed by OCCT will be restarted automatically after updating the client configuration.
 | OfficeHRDLookup | No | False | If true, OCCT will use an alternative way to detect the tenant migration status.
-| RemoveOfficeIdentityHive | No | False | If true, the complete Office identity hive will be removed. Caution, you might loose some custom configurations.
+| RemoveOfficeIdentityHive | No | False | If true, the complete Office identity hive will be removed. Caution, you might lose some custom configurations.
 | ClearOlkAutodiscoverCache | No | False | If true, Outlook AutoDiscover cache will be cleared to remove outdated AutoDiscover information.
 | UpdateODBClient | No | True | If true, connection settings of OneDrive for Business client will be updated.
 | RemoveBFWamAccount | No | True | If true, accounts from MCD will be removed from WAM.
