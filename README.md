@@ -21,7 +21,7 @@ OCCT is built on PowerShell can be executed automated or manually and has been c
 Download the PowerShell script [(OCCT.ps1)](https://raw.githubusercontent.com/microsoft/OCCT/main/OCCT.ps1) from this repository.
 In case the tenant already passed migration phase 9 and clients encounter issues with Office apps, the user should run `OCCT.ps1` on the client to reconfigure the client to connect to the new German datacenter regions.
 
-Windows 10 does not allow running PowerShell scripts by default. In order to run script, the local execution policy must be modified.
+Windows 10 does not allow running PowerShell scripts by default. In order to run the OCCT script, the local execution policy must be modified.
 To temporary allow executing PowerShell scripts, open PowerShell and run the command:
 
 `Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser`
