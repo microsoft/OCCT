@@ -32,9 +32,11 @@ Run `OCCT.ps1`, then reset the original state of the execution policy by executi
 
 IT departments or administrators who are responsible for multiple computers should consider deploying the script file to all Windows clients with Office Apps connected to Microsoft Cloud Deutschland prior to the end of phase 9 and prepare the users.
 
+It is strongly recommended to inform all users about the upcoming changes and the necessary user actions.
+
 Either the users execute the script according to the provided instructions after the migration phase 9 is completed, or a scheduled task is created to execute OCCT regularly (e.g. on startup and every 10 minutes).
 
-If the tenant name is provided to OCCT as a parameter (e.g. `.\OCCT.ps1 -tenant MyTenant`), OCCT will check if the migration phase 9 has been completed for the tenant prior to reconfiguring the client. Without this parameter, OCCT will start updating the client configuration without any pre-checks. It is recommended to do the pre-check if OCCT should be executed periodically.
+If the tenant name is provided to OCCT as a parameter (e.g. `.\OCCT.ps1 -tenant MyTenant`), OCCT will check if the migration phase 9 has been completed for the tenant prior to reconfiguring the client. Without this parameter, OCCT will start updating the client configuration without any pre-checks. It is required to do the pre-check if OCCT should be executed periodically.
 
 ### Summary
 1. Download OCCT.ps1 from this repository.
@@ -43,15 +45,16 @@ If the tenant name is provided to OCCT as a parameter (e.g. `.\OCCT.ps1 -tenant 
     - Option 1: Run the script once when migration phase 9 has been completed and your Office Apps are not connected anymore.
     - Option 2: Create a scheduled task (e.g. by GPO) to run OCCT regularly. 
 
-    Ensure the local execution policy of the client allows PowerShell script executions. 
+Ensure the local execution policy of the client allows PowerShell script executions. 
 
 ## Advanced Usage
 ### PowerShell module
 This is a PowerShell module with all features provided by OCCT to be used to build your own custom version.
 1. Download this repository.
-2. Deploy the OCCT module to all client computers: Copy all files and folders to an common PowerShell module folder (e.g. to `%ProgramFiles%\WindowsPowerShell\Modules\OCCT`).
-3. Create a scheduled task (e.g. by GPO or manually) to run OCCT regularly.
-4. The scheduled task must run PowerShell and the "Start-OCCT -Tenant <tenantname>" command, extended with all additional parameters you want to leverage (see following section).
+2. Adapt OCCT according to your requirements and test the solution.
+3. Deploy your customized OCCT module to all client computers: Copy all files and folders to an common PowerShell module folder (e.g. to `%ProgramFiles%\WindowsPowerShell\Modules\OCCT`).
+4. Create a scheduled task (e.g. by GPO or manually) to run OCCT regularly.
+5. The scheduled task must run PowerShell and the "Start-OCCT -Tenant <tenantname>" command, extended with all additional parameters you want to leverage (see following section).
 
 ## Parameters
 The parameters are valid for both versions of OCCT, the simple script file and the PowerShell module.
