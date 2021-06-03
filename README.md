@@ -57,7 +57,7 @@ This is a PowerShell module with all features provided by OCCT to be used to bui
 5. The scheduled task must run PowerShell and the "Start-OCCT -Tenant <tenantname>" command, extended with all additional parameters you want to leverage (see following section).
 
 ## Parameters
-The parameters are valid for both versions of OCCT, the simple script file and the PowerShell module.
+The PowerShell module version provides several options for customizing the behavior of OCCT. For the script version, the parameter "Tenant" is valid only.
 | Parameter | Required | Default | Description |
 | :------------- |:-------------| :-----| :-----|
 | Tenant | No | Empty | Name of your tenant. If your tenant domain is contoso.onmicrosoft.de, enter contoso only. Adding ".onmicrosoft.de" is not supported. If provided, OCCT will verify if the tenant cutover (phase 9 completed) is already done before performing any actions.
