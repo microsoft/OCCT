@@ -701,7 +701,7 @@ function Start-OCCT {
 
         if (!$forceMode) {
             try {
-                $offset = GetMaxOffset
+                $offset = Get-MaxOffset
                 Start-Sleep -seconds (Get-SleepTime($offset))
             } catch {
                 # Continue without sleep, if sth in sleep function fails
