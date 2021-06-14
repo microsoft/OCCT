@@ -1,4 +1,4 @@
-#***********************************************************************
+﻿#***********************************************************************
 #
 # Copyright (c) 2018 Microsoft Corporation. All rights reserved.
 #
@@ -78,12 +78,12 @@ function Show-UserPrompt {
         <Button x:Name="_continue" Content="Check again" HorizontalAlignment="Left" Margin="610,320,0,0" VerticalAlignment="Top" Height="47" Width="148" />
         <TextBlock HorizontalAlignment="Left" Margin="22,17,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="47" Width="736" FontSize="14" FontWeight="Bold" Foreground="Black"><Run Text="In order to ensure the proper function of the Office applications, the Office configuration must be adjusted urgently. To do this, please carry out the following steps immediately"/><Run/></TextBlock>
         <ListBox x:Name="applist" Margin="41,198,539,36" BorderBrush="White" IsEnabled="False" Background="Black"/>
-        <TextBlock HorizontalAlignment="Left" Margin="35,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="89" Width="745" FontWeight="Normal" Foreground="Black"><Run Text=" 1. Save all files opened in the Office applications (e.g. Word, Excel, Outlook, PowerPoint etc.) locally (e.g. on your Desktip, not in OneDrive or SharePoint Online).&#10;
+        <TextBlock HorizontalAlignment="Left" Margin="35,64,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="89" Width="745" FontWeight="Normal" Foreground="Black"><Run Text=" 1. Save all files opened in the Office applications (e.g. Word, Excel, Outlook, PowerPoint etc.) locally (e.g. on your Desktop, not in OneDrive or SharePoint Online).&#10;
 2. Then close all Office applications listed below.&#10;
 3. Wait 10 seconds before starting the Office apps again.&#10;
 4. Open the files saved locally in step 1 again and save it to the desired location."/></TextBlock>
         <TextBlock x:Name="runningApps" HorizontalAlignment="Left" Margin="36,174,0,0" Text="Office apps currently running:" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold" FontSize="14"/>
-        <TextBlock x:Name="countdown" HorizontalAlignment="Right" Margin="0,379,42,0" Text="Currently opended Office apps will be closed automatically in 10:00 minutes." TextWrapping="Wrap" VerticalAlignment="Top" Width="401" Height="19" TextAlignment="Right"/>
+        <TextBlock x:Name="countdown" HorizontalAlignment="Right" Margin="0,379,42,0" Text="Currently opened Office apps will be closed automatically in 10:00 minutes." TextWrapping="Wrap" VerticalAlignment="Top" Width="401" Height="19" TextAlignment="Right"/>
     </Grid>
 </Window>
 '@
